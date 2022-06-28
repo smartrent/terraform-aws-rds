@@ -27,7 +27,6 @@ Note that this example may create resources which cost money. Run `terraform des
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.6 |
-| <a name="provider_aws.region2"></a> [aws.region2](#provider\_aws.region2) | >= 4.6 |
 
 ## Modules
 
@@ -46,7 +45,6 @@ Note that this example may create resources which cost money. Run `terraform des
 | [aws_directory_service_directory.demo](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/directory_service_directory) | resource |
 | [aws_iam_role.rds_ad_auth](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy_attachment.rds_directory_services](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_kms_key.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_iam_policy_document.rds_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs

@@ -124,6 +124,7 @@ module "db" {
 
   allocated_storage     = 20
   max_allocated_storage = 100
+  storage_encrypted     = false
 
   username = "complete_mssql"
   port     = 1433
@@ -176,17 +177,10 @@ provider "aws" {
   region = local.region2
 }
 
-resource "aws_kms_key" "default" {
-  description = "Encryption key for cross region automated backups"
-
-  provider = aws.region2
-}
-
 module "db_automated_backups_replication" {
   source = "../../modules/db_instance_automated_backups_replication"
 
   source_db_instance_arn = module.db.db_instance_arn
-  kms_key_arn            = aws_kms_key.default.arn
 
   providers = {
     aws = aws.region2

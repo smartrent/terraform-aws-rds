@@ -66,8 +66,8 @@ module "db" {
 
   engine               = "oracle-ee"
   engine_version       = "19.0.0.0.ru-2021-10.rur-2021-10.r1"
-  family               = "oracle-ee-19.0" # DB parameter group
-  major_engine_version = "19.0"           # DB option group
+  family               = "oracle-ee-19" # DB parameter group
+  major_engine_version = "19"           # DB option group
   instance_class       = "db.t3.large"
   license_model        = "bring-your-own-license"
 
@@ -75,7 +75,8 @@ module "db" {
   max_allocated_storage = 100
 
   # Make sure that database name is capitalized, otherwise RDS will try to recreate RDS instance every time
-  db_name  = "COMPLETEORACLE"
+  # Oracle database name cannot be longer than 8 characters
+  db_name  = "ORACLE"
   username = "complete_oracle"
   port     = 1521
 
