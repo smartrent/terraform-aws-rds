@@ -124,7 +124,9 @@ module "db" {
 
   allocated_storage     = 20
   max_allocated_storage = 100
-  storage_encrypted     = false
+
+  # Encryption at rest is not available for DB instances running SQL Server Express Edition
+  storage_encrypted = false
 
   username = "complete_mssql"
   port     = 1433
