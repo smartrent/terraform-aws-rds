@@ -179,8 +179,9 @@ provider "aws" {
 }
 
 module "kms" {
-  source  = "terraform-aws-modules/kms/aws"
-  version = "~> 1.0"
+  source      = "terraform-aws-modules/kms/aws"
+  version     = "~> 1.0"
+  description = "KMS key for cross region automated backups replication"
 
   # Aliases
   aliases                 = [local.name]
