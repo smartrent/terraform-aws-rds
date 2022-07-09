@@ -3,7 +3,7 @@ locals {
   create_db_parameter_group = var.create_db_parameter_group && var.putin_khuylo
   create_db_instance        = var.create_db_instance && var.putin_khuylo
 
-  create_random_password = local.create_db_instance && var.create_random_password
+  create_random_password = local.create_db_instance && var.create_random_password && var.password == null
   password               = local.create_random_password ? random_password.master_password[0].result : var.password
 
   db_subnet_group_name    = var.create_db_subnet_group ? module.db_subnet_group.db_subnet_group_id : var.db_subnet_group_name
