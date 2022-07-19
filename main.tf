@@ -3,6 +3,9 @@ locals {
   create_db_parameter_group = var.create_db_parameter_group && var.putin_khuylo
   create_db_instance        = var.create_db_instance && var.putin_khuylo
 
+  create_rds_cluster_parameter_group = var.create_rds_cluster_parameter_group && var.putin_khuylo
+  create_rds_cluster                 = var.create_rds_cluster && var.putin_khuylo
+
   create_random_password = local.create_db_instance && var.create_random_password
   password               = local.create_random_password ? random_password.master_password[0].result : var.password
 
@@ -36,7 +39,7 @@ module "db_subnet_group" {
 module "db_parameter_group" {
   source = "./modules/db_parameter_group"
 
-  create = local.create_db_parameter_group
+  create = local.create_db_parameter_group && !local.create_rds_cluster_parameter_group
 
   name            = coalesce(var.parameter_group_name, var.identifier)
   use_name_prefix = var.parameter_group_use_name_prefix
@@ -69,7 +72,7 @@ module "db_option_group" {
 module "db_instance" {
   source = "./modules/db_instance"
 
-  create                = local.create_db_instance
+  create                = local.create_db_instance && !local.create_rds_cluster
   identifier            = var.identifier
   use_identifier_prefix = var.instance_use_identifier_prefix
 
@@ -144,4 +147,66 @@ module "db_instance" {
   s3_import                = var.s3_import
 
   tags = merge(var.tags, var.db_instance_tags)
+}
+
+module "rds_cluster" {
+  source = "./modules/rds_cluster"
+
+  create                        = local.create_rds_cluster && !local.create_db_instance
+  cluster_identifier            = var.cluster_identifier
+  cluster_identifier_prefix     = var.use_cluster_identifier_prefix
+  replication_source_identifier = var.replication_source_identifier
+  source_region                 = var.cluster_source_region
+
+  storage_type              = var.cluster_storage_type
+  iops                      = var.cluster_iops
+  allocated_storage         = var.cluster_allocated_storage
+  db_cluster_instance_class = var.cluster_instance_class
+
+  engine                              = var.cluster_engine
+  engine_mode                         = var.cluster_engine_mode
+  engine_version                      = var.cluster_engine_version
+  allow_major_version_upgrade         = var.cluster_allow_major_version_upgrade
+  enable_http_endpoint                = var.cluster_enable_http_endpoint
+  kms_key_id                          = var.cluster_kms_key_id
+  database_name                       = var.cluster_database_name
+  master_username                     = var.cluster_master_username
+  master_password                     = local.cluster_master_password
+  final_snapshot_identifier           = var.cluster_final_snapshot_identifier
+  skip_final_snapshot                 = var.cluster_skip_final_snapshot
+  deletion_protection                 = var.cluster_deletion_protection
+  backup_retention_period             = var.cluster_backup_retention_period
+  preferred_backup_window             = var.cluster_preferred_backup_window
+  preferred_maintenance_window        = var.cluster_preferred_maintenance_window
+  port                                = var.cluster_port
+  db_subnet_group_name                = var.cluster_db_subnet_group_name
+  vpc_security_group_ids              = var.cluster_vpc_security_group_ids
+  snapshot_identifier                 = var.cluster_snapshot_identifier
+  storage_encrypted                   = var.cluster_storage_encrypted
+  apply_immediately                   = var.cluster_apply_immediately
+  db_cluster_parameter_group_name     = var.cluster_db_cluster_parameter_group_name
+  db_instance_parameter_group_name    = var.cluster_allow_major_version_upgrade ? var.db_cluster_db_instance_parameter_group_name : null
+  iam_database_authentication_enabled = var.cluster_iam_database_authentication_enabled
+  copy_tags_to_snapshot               = var.cluster_copy_tags_to_snapshot
+  enabled_cloudwatch_logs_exports     = var.cluster_enabled_cloudwatch_logs_exports
+  
+  restore_to_point_in_time = var.cluster_restore_to_point_in_time
+  s3_import                = var.cluster_s3_import
+  
+  tags = merge(var.tags, var.cluster_tags)
+}
+
+module "rds_cluster_parameter_group" {
+  source = "./modules/rds_cluster_parameter_group"
+
+  create = local.create_rds_cluster_parameter_group && !local.create_db_parameter_group
+
+  name            = coalesce(var.parameter_group_name, var.identifier)
+  use_name_prefix = var.parameter_group_use_name_prefix
+  description     = var.parameter_group_description
+  family          = var.family
+
+  parameters = var.parameters
+
+  tags = merge(var.tags, var.db_parameter_group_tags)
 }
