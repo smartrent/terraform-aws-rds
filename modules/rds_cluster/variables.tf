@@ -11,6 +11,17 @@ variable "create_cluster" {
   default     = true
 }
 
+variable "cluster_identifier" {
+  description = "The name of the RDS cluster"
+  type        = string
+}
+
+variable "use_cluster_identifier_prefix" {
+  description = "Determines whether to use `identifier` as is or create a unique identifier beginning with `identifier` as the specified prefix"
+  type        = bool
+  default     = false
+}
+
 variable "replication_source_identifier" {
   description = "ARN of a source DB cluster or DB instance if this DB cluster is to be created as a Read Replica"
   type        = string
@@ -53,13 +64,13 @@ variable "kms_key_id" {
   default     = null
 }
 
-variable "database_name" {
+variable "db_name" {
   description = "Name for an automatically created database on cluster creation"
   type        = string
   default     = null
 }
 
-variable "master_username" {
+variable "username" {
   description = "Username for the master DB user"
   type        = string
   default     = "root"
@@ -77,7 +88,7 @@ variable "random_password_length" {
   default     = 10
 }
 
-variable "master_password" {
+variable "password" {
   description = "Password for the master DB user. Note - when specifying a value here, 'create_random_password' should be set to `false`"
   type        = string
   default     = null
@@ -107,13 +118,13 @@ variable "backup_retention_period" {
   default     = 7
 }
 
-variable "preferred_backup_window" {
+variable "backup_window" {
   description = "The daily time range during which automated backups are created if automated backups are enabled using the `backup_retention_period` parameter. Time in UTC"
   type        = string
   default     = "02:00-03:00"
 }
 
-variable "preferred_maintenance_window" {
+variable "maintenance_window" {
   description = "The weekly time range during which system maintenance can occur, in (UTC)"
   type        = string
   default     = "sun:05:00-sun:06:00"
@@ -129,6 +140,12 @@ variable "vpc_security_group_ids" {
   description = "List of VPC security groups to associate to the cluster in addition to the SG we create in this module"
   type        = list(string)
   default     = []
+}
+
+variable "db_subnet_group_name" {
+  description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
+  type        = string
+  default     = null
 }
 
 variable "snapshot_identifier" {
@@ -197,6 +214,30 @@ variable "cluster_tags" {
   default     = {}
 }
 
+variable "iops" {
+  description = "The amount of provisioned IOPS. Setting this implies a storage_type of 'io1'"
+  type        = number
+  default     = 0
+}
+
+variable "allocated_storage" {
+  description = "he amount of storage in gibibytes (GiB) to allocate to each DB instance in the Multi-AZ DB cluster"
+  type        = number
+  default     = 0
+}
+
+variable "storage_type" {
+  description = "Specifies the storage type to be associated with the DB cluster. (This setting is required to create a Multi-AZ DB cluster). Valid values: io1"
+  type        = string
+  default     = "io1"
+}
+
+variable "instance_class" {
+  description = "The instance type of the RDS instance"
+  type        = string
+  default     = null
+}
+
 # aws_rds_cluster_role_association
 variable "iam_roles" {
   description = "Map of IAM roles and supported feature names to associate with the cluster"
@@ -215,6 +256,24 @@ variable "monitoring_role_arn" {
   description = "IAM role used by RDS to send enhanced monitoring metrics to CloudWatch"
   type        = string
   default     = ""
+}
+
+variable "monitoring_role_name" {
+  description = "Name of the IAM role which will be created when create_monitoring_role is enabled."
+  type        = string
+  default     = "rds-monitoring-role"
+}
+
+variable "monitoring_role_use_name_prefix" {
+  description = "Determines whether to use `monitoring_role_name` as is or create a unique identifier beginning with `monitoring_role_name` as the specified prefix"
+  type        = bool
+  default     = false
+}
+
+variable "monitoring_role_description" {
+  description = "Description of the monitoring IAM role"
+  type        = string
+  default     = null
 }
 
 variable "iam_role_name" {
@@ -262,5 +321,27 @@ variable "iam_role_force_detach_policies" {
 variable "iam_role_max_session_duration" {
   description = "Maximum session duration (in seconds) that you want to set for the monitoring role"
   type        = number
+  default     = null
+}
+
+################################################################################
+# CloudWatch Log Group
+################################################################################
+
+variable "create_cloudwatch_log_group" {
+  description = "Determines whether a CloudWatch log group is created for each `enabled_cloudwatch_logs_exports`"
+  type        = bool
+  default     = false
+}
+
+variable "cloudwatch_log_group_retention_in_days" {
+  description = "The number of days to retain CloudWatch logs for the DB instance"
+  type        = number
+  default     = 7
+}
+
+variable "cloudwatch_log_group_kms_key_id" {
+  description = "The ARN of the KMS Key to use when encrypting log data"
+  type        = string
   default     = null
 }

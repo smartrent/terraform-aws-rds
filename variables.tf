@@ -501,3 +501,60 @@ variable "putin_khuylo" {
   type        = bool
   default     = true
 }
+
+################################################################################
+# RDS Cluster
+################################################################################
+
+variable "cluster_identifier" {
+  description = "The name of the RDS cluster"
+  type        = string
+}
+
+variable "create_rds_cluster" {
+  description = "Whether to create an rds cluster"
+  type        = bool
+  default     = false
+}
+
+variable "create_rds_cluster_parameter_group" {
+  description = "Whether to create an rds cluster parameter group"
+  type        = bool
+  default     = false
+}
+
+variable "db_cluster_parameter_group_name" {
+  description = "A cluster parameter group to associate with the cluster"
+  type        = string
+  default     = null
+}
+
+variable "engine_mode" {
+  description = "The database engine mode. Valid values: `global`, `multimaster`, `parallelquery`, `provisioned`, `serverless`. Defaults to: `provisioned`"
+  type        = string
+  default     = null
+}
+
+variable "final_snapshot_identifier" {
+  description = "The name of your final DB snapshot when this DB cluster is deleted. If omitted, no final snapshot will be made"
+  type        = string
+  default     = "final"
+}
+
+variable "replication_source_identifier" {
+  description = "ARN of a source DB cluster or DB instance if this DB cluster is to be created as a Read Replica"
+  type        = string
+  default     = null
+}
+
+variable "source_region" {
+  description = "The source region for an encrypted replica DB cluster"
+  type        = string
+  default     = null
+}
+
+variable "use_cluster_identifier_prefix" {
+  description = "Determines whether to use `identifier` as is or create a unique identifier beginning with `identifier` as the specified prefix"
+  type        = bool
+  default     = false
+}

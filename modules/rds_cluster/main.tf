@@ -1,7 +1,7 @@
 locals {
   monitoring_role_arn = var.create_monitoring_role ? aws_iam_role.enhanced_monitoring[0].arn : var.monitoring_role_arn
 
-  final_snapshot_identifier = var.skip_final_snapshot ? null : "${var.final_snapshot_identifier_prefix}-${var.identifier}-${try(random_id.snapshot_identifier[0].hex, "")}"
+  final_snapshot_identifier = var.skip_final_snapshot ? null : "${var.final_snapshot_identifier_prefix}-${var.cluster_identifier}-${try(random_id.snapshot_identifier[0].hex, "")}"
 
   monitoring_role_name        = var.monitoring_role_use_name_prefix ? null : var.monitoring_role_name
   monitoring_role_name_prefix = var.monitoring_role_use_name_prefix ? "${var.monitoring_role_name}-" : null
@@ -45,15 +45,15 @@ resource "aws_rds_cluster" "this" {
   engine_version                   = var.engine_version
   allow_major_version_upgrade      = var.allow_major_version_upgrade
   kms_key_id                       = var.kms_key_id
-  database_name                    = var.database_name
-  master_username                  = var.master_username
-  master_password                  = local.master_password
-  final_snapshot_identifier        = var.final_snapshot_identifier
+  database_name                    = var.db_name
+  master_username                  = var.username
+  master_password                  = var.password
+  final_snapshot_identifier        = local.final_snapshot_identifier
   skip_final_snapshot              = var.skip_final_snapshot
   deletion_protection              = var.deletion_protection
   backup_retention_period          = var.backup_retention_period
-  preferred_backup_window          = var.preferred_backup_window
-  preferred_maintenance_window     = var.preferred_maintenance_window
+  preferred_backup_window          = var.backup_window
+  preferred_maintenance_window     = var.maintenance_window
   port                             = var.port
   db_subnet_group_name             = var.db_subnet_group_name
   vpc_security_group_ids           = var.vpc_security_group_ids
@@ -105,7 +105,7 @@ resource "aws_rds_cluster" "this" {
 }
 
 resource "aws_rds_cluster_role_association" "this" {
-  for_each = local.create_cluster ? var.iam_roles : {}
+  for_each = var.create_cluster ? var.iam_roles : {}
 
   db_cluster_identifier = try(aws_rds_cluster.this[0].id, "")
   feature_name          = each.value.feature_name
@@ -119,7 +119,7 @@ resource "aws_rds_cluster_role_association" "this" {
 resource "aws_cloudwatch_log_group" "this" {
   for_each = toset([for log in var.enabled_cloudwatch_logs_exports : log if var.create_cluster && var.create_cloudwatch_log_group])
 
-  name              = "/aws/rds/instance/${var.identifier}/${each.value}"
+  name              = "/aws/rds/instance/${var.cluster_identifier}/${each.value}"
   retention_in_days = var.cloudwatch_log_group_retention_in_days
   kms_key_id        = var.cloudwatch_log_group_kms_key_id
 
