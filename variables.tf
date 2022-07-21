@@ -507,11 +507,6 @@ variable "putin_khuylo" {
 # RDS Cluster
 ################################################################################
 
-variable "cluster_identifier" {
-  description = "The name of the RDS cluster"
-  type        = string
-}
-
 variable "create_rds_cluster" {
   description = "Whether to create an rds cluster"
   type        = bool

@@ -67,17 +67,18 @@ module "db_cluster" {
   source = "../../"
 
   create_rds_cluster = true
-  cluster_identifier = local.name
+  identifier         = local.name
 
   # You can create a Multi-AZ DB cluster only with MySQL version 8.0.28 and higher 8.0 versions, and PostgreSQL version 13.4.
-  engine               = "postgres"
-  engine_version       = "14.1"
+  engine         = "postgres"
+  engine_version = "14.1"
+  family         = "postgres14"
 
-  allocated_storage     = 100
+  allocated_storage = 100
   # Multi-AZ DB clusters only support Provisioned IOPS storage.
-  storage_type          = "io1" 
-  iops                  = 3000
-  instance_class        = "db.r5.large"
+  storage_type   = "io1"
+  iops           = 3000
+  instance_class = "db.r5.large"
 
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
@@ -98,11 +99,11 @@ module "db_cluster" {
   skip_final_snapshot     = true
   deletion_protection     = false
 
-  create_monitoring_role                = true
-  monitoring_interval                   = 60
-  monitoring_role_name                  = "example-monitoring-role-name"
-  monitoring_role_use_name_prefix       = true
-  monitoring_role_description           = "Description for monitoring role"
+  create_monitoring_role          = true
+  monitoring_interval             = 60
+  monitoring_role_name            = "example-monitoring-role-name"
+  monitoring_role_use_name_prefix = true
+  monitoring_role_description     = "Description for monitoring role"
 
   create_rds_cluster_parameter_group = true
 
