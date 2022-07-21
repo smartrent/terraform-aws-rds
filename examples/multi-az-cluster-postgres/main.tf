@@ -66,17 +66,18 @@ module "security_group" {
 module "db_cluster" {
   source = "../../"
 
+  create_rds_cluster = true
   cluster_identifier = local.name
 
-  # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
-  cluster_engine               = "postgres"
-  cluster_engine_version       = "14.1"
-  major_engine_version = "14"         # DB option group
+  # You can create a Multi-AZ DB cluster only with MySQL version 8.0.28 and higher 8.0 versions, and PostgreSQL version 13.4.
+  engine               = "postgres"
+  engine_version       = "14.1"
 
-  cluster_allocated_storage     = 100
-  cluster_storage_type          = "io1"
-  cluster_iops                  = 3000
-  cluster_instance_class        = "db.r5.large"
+  allocated_storage     = 100
+  # Multi-AZ DB clusters only support Provisioned IOPS storage.
+  storage_type          = "io1" 
+  iops                  = 3000
+  instance_class        = "db.r5.large"
 
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
@@ -85,7 +86,6 @@ module "db_cluster" {
   username = "complete_postgresql"
   port     = 5432
 
-  multi_az               = true
   db_subnet_group_name   = module.vpc.database_subnet_group
   vpc_security_group_ids = [module.security_group.security_group_id]
 
@@ -98,13 +98,13 @@ module "db_cluster" {
   skip_final_snapshot     = true
   deletion_protection     = false
 
-  performance_insights_enabled          = true
-  performance_insights_retention_period = 7
   create_monitoring_role                = true
   monitoring_interval                   = 60
   monitoring_role_name                  = "example-monitoring-role-name"
   monitoring_role_use_name_prefix       = true
   monitoring_role_description           = "Description for monitoring role"
+
+  create_rds_cluster_parameter_group = true
 
   parameters = [
     {

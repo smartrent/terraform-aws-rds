@@ -152,7 +152,7 @@ module "db_instance" {
 module "rds_cluster" {
   source = "./modules/rds_cluster"
 
-  create                        = local.create_rds_cluster && !local.create_db_instance
+  create                        = local.create_rds_cluster
   cluster_identifier            = var.cluster_identifier
   cluster_identifier_prefix     = var.use_cluster_identifier_prefix
   replication_source_identifier = var.replication_source_identifier
@@ -189,6 +189,13 @@ module "rds_cluster" {
   copy_tags_to_snapshot               = var.copy_tags_to_snapshot
   enabled_cloudwatch_logs_exports     = var.enabled_cloudwatch_logs_exports
 
+  monitoring_interval             = var.monitoring_interval
+  monitoring_role_arn             = var.monitoring_role_arn
+  monitoring_role_name            = var.monitoring_role_name
+  monitoring_role_use_name_prefix = var.monitoring_role_use_name_prefix
+  monitoring_role_description     = var.monitoring_role_description
+  create_monitoring_role          = var.create_monitoring_role
+
   restore_to_point_in_time = var.restore_to_point_in_time
   s3_import                = var.s3_import
 
@@ -198,7 +205,7 @@ module "rds_cluster" {
 module "rds_cluster_parameter_group" {
   source = "./modules/rds_cluster_parameter_group"
 
-  create = local.create_rds_cluster_parameter_group && !local.create_db_parameter_group
+  create = local.create_rds_cluster_parameter_group
 
   name            = coalesce(var.parameter_group_name, var.identifier)
   use_name_prefix = var.parameter_group_use_name_prefix
