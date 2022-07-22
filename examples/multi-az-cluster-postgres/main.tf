@@ -92,7 +92,7 @@ module "db_cluster" {
 
   maintenance_window              = "Mon:00:00-Mon:03:00"
   backup_window                   = "03:00-06:00"
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
+  enabled_cloudwatch_logs_exports = ["postgresql", "general"]
   create_cloudwatch_log_group     = true
 
   backup_retention_period = 1

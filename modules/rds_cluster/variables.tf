@@ -203,9 +203,9 @@ variable "s3_import" {
 }
 
 variable "restore_to_point_in_time" {
-  description = "Map of nested attributes for cloning Aurora cluster"
+  description = "Restore to a point in time (MySQL is NOT supported)"
   type        = map(string)
-  default     = {}
+  default     = null
 }
 
 variable "cluster_tags" {

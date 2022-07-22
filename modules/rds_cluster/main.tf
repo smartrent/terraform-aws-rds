@@ -83,7 +83,7 @@ resource "aws_rds_cluster" "this" {
   }
 
   dynamic "restore_to_point_in_time" {
-    for_each = length(keys(var.restore_to_point_in_time)) == 0 ? [] : [var.restore_to_point_in_time]
+    for_each = var.restore_to_point_in_time != null ? [var.restore_to_point_in_time] : []
 
     content {
       source_cluster_identifier  = restore_to_point_in_time.value.source_cluster_identifier
