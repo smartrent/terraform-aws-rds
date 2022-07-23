@@ -22,12 +22,6 @@ variable "use_cluster_identifier_prefix" {
   default     = false
 }
 
-variable "replication_source_identifier" {
-  description = "ARN of a source DB cluster or DB instance if this DB cluster is to be created as a Read Replica"
-  type        = string
-  default     = null
-}
-
 variable "source_region" {
   description = "The source region for an encrypted replica DB cluster"
   type        = string

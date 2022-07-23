@@ -29,10 +29,9 @@ resource "aws_rds_cluster" "this" {
   # Notes:
   # iam_roles has been removed from this resource and instead will be used with aws_rds_cluster_role_association below to avoid conflicts per docs
 
-  cluster_identifier            = local.cluster_identifier
-  cluster_identifier_prefix     = local.cluster_identifier_prefix
-  replication_source_identifier = var.replication_source_identifier
-  source_region                 = var.source_region
+  cluster_identifier        = local.cluster_identifier
+  cluster_identifier_prefix = local.cluster_identifier_prefix
+  source_region             = var.source_region
 
   # These attributes are required for multi-az deployments
   storage_type              = var.storage_type
@@ -93,13 +92,7 @@ resource "aws_rds_cluster" "this" {
     }
   }
 
-  lifecycle {
-    ignore_changes = [
-      # See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster#replication_source_identifier
-      # Since this is used either in read-replica clusters or global clusters, this should be acceptable to specify
-      replication_source_identifier,
-    ]
-  }
+  depends_on = [aws_cloudwatch_log_group.this]
 
   tags = merge(var.tags, var.cluster_tags)
 }

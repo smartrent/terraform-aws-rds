@@ -71,14 +71,14 @@ module "db_cluster" {
 
   # You can create a Multi-AZ DB cluster only with MySQL version 8.0.28 and higher 8.0 versions, and PostgreSQL version 13.4.
   engine         = "postgres"
-  engine_version = "14.1"
-  family         = "postgres14"
+  engine_version = "13.4"
+  family         = "postgres13"
 
   allocated_storage = 100
   # Multi-AZ DB clusters only support Provisioned IOPS storage.
   storage_type   = "io1"
   iops           = 3000
-  instance_class = "db.r5.large"
+  instance_class = "db.m5d.large"
 
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
@@ -92,7 +92,7 @@ module "db_cluster" {
 
   maintenance_window              = "Mon:00:00-Mon:03:00"
   backup_window                   = "03:00-06:00"
-  enabled_cloudwatch_logs_exports = ["postgresql", "general"]
+  enabled_cloudwatch_logs_exports = ["postgresql"]
   create_cloudwatch_log_group     = true
 
   backup_retention_period = 1
