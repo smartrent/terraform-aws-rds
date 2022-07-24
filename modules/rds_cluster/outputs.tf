@@ -67,19 +67,3 @@ output "cluster_role_associations" {
   description = "A map of IAM roles associated with the cluster and their attributes"
   value       = aws_rds_cluster_role_association.this
 }
-
-# Enhanced monitoring role
-output "enhanced_monitoring_iam_role_name" {
-  description = "The name of the enhanced monitoring role"
-  value       = try(aws_iam_role.enhanced_monitoring[0].name, "")
-}
-
-output "enhanced_monitoring_iam_role_arn" {
-  description = "The Amazon Resource Name (ARN) specifying the enhanced monitoring role"
-  value       = try(aws_iam_role.enhanced_monitoring[0].arn, "")
-}
-
-output "enhanced_monitoring_iam_role_unique_id" {
-  description = "Stable and unique string identifying the enhanced monitoring role"
-  value       = try(aws_iam_role.enhanced_monitoring[0].unique_id, "")
-}

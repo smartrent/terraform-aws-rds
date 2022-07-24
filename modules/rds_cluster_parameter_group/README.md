@@ -1,18 +1,18 @@
-# aws_db_parameter_group
+# aws_rds_cluster_parameter_group
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.62 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.62 |
 
 ## Modules
 
@@ -22,7 +22,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_db_parameter_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group) | resource |
+| [aws_rds_cluster_parameter_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_parameter_group) | resource |
 
 ## Inputs
 
@@ -40,8 +40,8 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_db_parameter_group_arn"></a> [db\_parameter\_group\_arn](#output\_db\_parameter\_group\_arn) | The ARN of the db parameter group |
-| <a name="output_db_parameter_group_id"></a> [db\_parameter\_group\_id](#output\_db\_parameter\_group\_id) | The db parameter group id |
+| <a name="output_rds_cluster_parameter_group_arn"></a> [rds\_cluster\_parameter\_group\_arn](#output\_rds\_cluster\_parameter\_group\_arn) | The ARN of the db parameter group |
+| <a name="output_rds_cluster_parameter_group_id"></a> [rds\_cluster\_parameter\_group\_id](#output\_rds\_cluster\_parameter\_group\_id) | The db parameter group id |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- BEGIN_TF_DOCS -->
@@ -49,14 +49,14 @@ No modules.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.62 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.21.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.23.0 |
 
 ## Modules
 
@@ -66,7 +66,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_db_parameter_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group) | resource |
+| [aws_rds_cluster_parameter_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_parameter_group) | resource |
 
 ## Inputs
 
@@ -84,6 +84,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_db_parameter_group_arn"></a> [db\_parameter\_group\_arn](#output\_db\_parameter\_group\_arn) | The ARN of the db parameter group |
-| <a name="output_db_parameter_group_id"></a> [db\_parameter\_group\_id](#output\_db\_parameter\_group\_id) | The db parameter group id |
+| <a name="output_rds_cluster_parameter_group_arn"></a> [rds\_cluster\_parameter\_group\_arn](#output\_rds\_cluster\_parameter\_group\_arn) | The ARN of the db parameter group |
+| <a name="output_rds_cluster_parameter_group_id"></a> [rds\_cluster\_parameter\_group\_id](#output\_rds\_cluster\_parameter\_group\_id) | The db parameter group id |
 <!-- END_TF_DOCS -->

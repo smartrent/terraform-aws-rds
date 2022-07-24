@@ -70,18 +70,6 @@ variable "username" {
   default     = "root"
 }
 
-variable "create_random_password" {
-  description = "Determines whether to create random password for RDS primary cluster"
-  type        = bool
-  default     = true
-}
-
-variable "random_password_length" {
-  description = "Length of random password to create. Defaults to `10`"
-  type        = number
-  default     = 10
-}
-
 variable "password" {
   description = "Password for the master DB user. Note - when specifying a value here, 'create_random_password' should be set to `false`"
   type        = string
@@ -97,7 +85,7 @@ variable "final_snapshot_identifier_prefix" {
 variable "skip_final_snapshot" {
   description = "Determines whether a final snapshot is created before the cluster is deleted. If true is specified, no snapshot is created"
   type        = bool
-  default     = null
+  default     = false
 }
 
 variable "deletion_protection" {
@@ -162,12 +150,6 @@ variable "apply_immediately" {
 
 variable "db_cluster_parameter_group_name" {
   description = "A cluster parameter group to associate with the cluster"
-  type        = string
-  default     = null
-}
-
-variable "db_cluster_db_instance_parameter_group_name" {
-  description = "Instance parameter group to associate with all instances of the DB cluster. The `db_cluster_db_instance_parameter_group_name` is only valid in combination with `allow_major_version_upgrade`"
   type        = string
   default     = null
 }
@@ -237,85 +219,6 @@ variable "iam_roles" {
   description = "Map of IAM roles and supported feature names to associate with the cluster"
   type        = map(map(string))
   default     = {}
-}
-
-# Enhanced monitoring role
-variable "create_monitoring_role" {
-  description = "Determines whether to create the IAM role for RDS enhanced monitoring"
-  type        = bool
-  default     = true
-}
-
-variable "monitoring_role_arn" {
-  description = "IAM role used by RDS to send enhanced monitoring metrics to CloudWatch"
-  type        = string
-  default     = ""
-}
-
-variable "monitoring_role_name" {
-  description = "Name of the IAM role which will be created when create_monitoring_role is enabled."
-  type        = string
-  default     = "rds-monitoring-role"
-}
-
-variable "monitoring_role_use_name_prefix" {
-  description = "Determines whether to use `monitoring_role_name` as is or create a unique identifier beginning with `monitoring_role_name` as the specified prefix"
-  type        = bool
-  default     = false
-}
-
-variable "monitoring_role_description" {
-  description = "Description of the monitoring IAM role"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_name" {
-  description = "Friendly name of the monitoring role"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_use_name_prefix" {
-  description = "Determines whether to use `iam_role_name` as is or create a unique name beginning with the `iam_role_name` as the prefix"
-  type        = bool
-  default     = false
-}
-
-variable "iam_role_description" {
-  description = "Description of the monitoring role"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_path" {
-  description = "Path for the monitoring role"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_managed_policy_arns" {
-  description = "Set of exclusive IAM managed policy ARNs to attach to the monitoring role"
-  type        = list(string)
-  default     = null
-}
-
-variable "iam_role_permissions_boundary" {
-  description = "The ARN of the policy that is used to set the permissions boundary for the monitoring role"
-  type        = string
-  default     = null
-}
-
-variable "iam_role_force_detach_policies" {
-  description = "Whether to force detaching any policies the monitoring role has before destroying it"
-  type        = bool
-  default     = null
-}
-
-variable "iam_role_max_session_duration" {
-  description = "Maximum session duration (in seconds) that you want to set for the monitoring role"
-  type        = number
-  default     = null
 }
 
 ################################################################################

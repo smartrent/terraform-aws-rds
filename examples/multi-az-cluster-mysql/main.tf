@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 locals {
-  name   = "multi-az-cluster-postgresql"
+  name   = "multi-az-cluster-mysql"
   region = "eu-west-1"
   tags = {
     Owner       = "user"
@@ -38,7 +38,7 @@ module "security_group" {
   version = "~> 4.0"
 
   name        = local.name
-  description = "Complete PostgreSQL example security group"
+  description = "Multi-AZ MySQL example security group"
   vpc_id      = module.vpc.vpc_id
 
   # ingress
@@ -47,7 +47,7 @@ module "security_group" {
       from_port   = 5432
       to_port     = 5432
       protocol    = "tcp"
-      description = "PostgreSQL access from within VPC"
+      description = "MySQL access from within VPC"
       cidr_blocks = module.vpc.vpc_cidr_block
     },
   ]
@@ -65,10 +65,10 @@ module "db_cluster" {
   create_rds_cluster = true
   identifier         = local.name
 
-  # You can create a Multi-AZ DB cluster only with PostgreSQL version 13.4.
-  engine         = "postgres"
-  engine_version = "13.4"
-  family         = "postgres13"
+  # You can create a Multi-AZ DB cluster only with MySQL version 8.0.28 and higher 8.0 versions.
+  engine         = "mysql"
+  engine_version = "8.0.28"
+  family         = "mysql8.0"
 
   allocated_storage = 100
   # Multi-AZ DB clusters only support Provisioned IOPS storage.
@@ -79,8 +79,8 @@ module "db_cluster" {
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername
   # user cannot be used as it is a reserved word used by the engine"
-  db_name  = "completePostgresql"
-  username = "complete_postgresql"
+  db_name  = "multi_az_mysql"
+  username = "multi_az_mysql"
   port     = 5432
 
   db_subnet_group_name   = module.vpc.database_subnet_group
@@ -88,7 +88,7 @@ module "db_cluster" {
 
   maintenance_window              = "Mon:00:00-Mon:03:00"
   backup_window                   = "03:00-06:00"
-  enabled_cloudwatch_logs_exports = ["postgresql"]
+  enabled_cloudwatch_logs_exports = ["general"]
   create_cloudwatch_log_group     = true
 
   backup_retention_period = 1
@@ -99,12 +99,12 @@ module "db_cluster" {
 
   parameters = [
     {
-      name  = "autovacuum"
-      value = 1
+      name  = "character_set_client"
+      value = "utf8mb4"
     },
     {
-      name  = "client_encoding"
-      value = "utf8"
+      name  = "character_set_server"
+      value = "utf8mb4"
     }
   ]
 

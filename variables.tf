@@ -531,12 +531,6 @@ variable "engine_mode" {
   default     = null
 }
 
-variable "final_snapshot_identifier" {
-  description = "The name of your final DB snapshot when this DB cluster is deleted. If omitted, no final snapshot will be made"
-  type        = string
-  default     = "final"
-}
-
 variable "source_region" {
   description = "The source region for an encrypted replica DB cluster"
   type        = string
@@ -547,4 +541,10 @@ variable "use_cluster_identifier_prefix" {
   description = "Determines whether to use `identifier` as is or create a unique identifier beginning with `identifier` as the specified prefix"
   type        = bool
   default     = false
+}
+
+variable "iam_roles" {
+  description = "Map of IAM roles and supported feature names to associate with the cluster"
+  type        = map(map(string))
+  default     = {}
 }

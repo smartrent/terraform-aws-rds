@@ -1,18 +1,19 @@
 locals {
   create_db_subnet_group    = var.create_db_subnet_group && var.putin_khuylo
-  create_db_parameter_group = var.create_db_parameter_group && var.putin_khuylo
-  create_db_instance        = var.create_db_instance && var.putin_khuylo
+  create_db_parameter_group = var.create_db_parameter_group && !local.create_rds_cluster_parameter_group && var.putin_khuylo
+  create_db_instance        = var.create_db_instance && !local.create_rds_cluster && var.putin_khuylo
 
-  create_rds_cluster_parameter_group = var.create_rds_cluster_parameter_group && var.putin_khuylo
+  create_rds_cluster_parameter_group = var.create_rds_cluster_parameter_group && local.create_rds_cluster && var.putin_khuylo
   create_rds_cluster                 = var.create_rds_cluster && var.putin_khuylo
 
-  create_random_password = local.create_db_instance && var.create_random_password
+  create_random_password = (local.create_db_instance || local.create_rds_cluster) && var.create_random_password
   password               = local.create_random_password ? random_password.master_password[0].result : var.password
 
-  db_subnet_group_name    = var.create_db_subnet_group ? module.db_subnet_group.db_subnet_group_id : var.db_subnet_group_name
-  parameter_group_name_id = var.create_db_parameter_group ? module.db_parameter_group.db_parameter_group_id : var.parameter_group_name
+  db_subnet_group_name             = var.create_db_subnet_group ? module.db_subnet_group.db_subnet_group_id : var.db_subnet_group_name
+  parameter_group_name_id          = var.create_db_parameter_group ? module.db_parameter_group.db_parameter_group_id : var.parameter_group_name
+  rds_cluster_parameter_group_name = var.create_rds_cluster_parameter_group ? module.rds_cluster_parameter_group.rds_cluster_parameter_group_id : var.db_cluster_parameter_group_name
 
-  create_db_option_group = var.create_db_option_group && var.engine != "postgres"
+  create_db_option_group = var.create_db_option_group && var.engine != "postgres" && !var.create_rds_cluster
   option_group           = local.create_db_option_group ? module.db_option_group.db_option_group_id : var.option_group_name
 }
 
@@ -39,7 +40,7 @@ module "db_subnet_group" {
 module "db_parameter_group" {
   source = "./modules/db_parameter_group"
 
-  create = local.create_db_parameter_group && !local.create_rds_cluster_parameter_group
+  create = local.create_db_parameter_group
 
   name            = coalesce(var.parameter_group_name, var.identifier)
   use_name_prefix = var.parameter_group_use_name_prefix
@@ -72,7 +73,7 @@ module "db_option_group" {
 module "db_instance" {
   source = "./modules/db_instance"
 
-  create                = local.create_db_instance && !local.create_rds_cluster
+  create                = local.create_db_instance
   identifier            = var.identifier
   use_identifier_prefix = var.instance_use_identifier_prefix
 
@@ -162,38 +163,33 @@ module "rds_cluster" {
   allocated_storage = var.allocated_storage
   instance_class    = var.instance_class
 
-  engine                                      = var.engine
-  engine_mode                                 = var.engine_mode
-  engine_version                              = var.engine_version
-  allow_major_version_upgrade                 = var.allow_major_version_upgrade
-  kms_key_id                                  = var.kms_key_id
-  db_name                                     = var.db_name
-  username                                    = var.username
-  password                                    = local.password
-  final_snapshot_identifier_prefix            = var.final_snapshot_identifier_prefix
-  skip_final_snapshot                         = var.skip_final_snapshot
-  deletion_protection                         = var.deletion_protection
-  backup_retention_period                     = var.backup_retention_period
-  backup_window                               = var.backup_window
-  maintenance_window                          = var.maintenance_window
-  port                                        = var.port
-  db_subnet_group_name                        = var.db_subnet_group_name
-  vpc_security_group_ids                      = var.vpc_security_group_ids
-  snapshot_identifier                         = var.snapshot_identifier
-  storage_encrypted                           = var.storage_encrypted
-  apply_immediately                           = var.apply_immediately
-  db_cluster_parameter_group_name             = var.db_cluster_parameter_group_name
-  db_cluster_db_instance_parameter_group_name = var.allow_major_version_upgrade ? var.parameter_group_name : null
-  copy_tags_to_snapshot                       = var.copy_tags_to_snapshot
-  enabled_cloudwatch_logs_exports             = var.enabled_cloudwatch_logs_exports
-
-  monitoring_role_arn             = var.monitoring_role_arn
-  monitoring_role_name            = var.monitoring_role_name
-  monitoring_role_use_name_prefix = var.monitoring_role_use_name_prefix
-  monitoring_role_description     = var.monitoring_role_description
-  create_monitoring_role          = var.create_monitoring_role
+  engine                           = var.engine
+  engine_mode                      = var.engine_mode
+  engine_version                   = var.engine_version
+  allow_major_version_upgrade      = var.allow_major_version_upgrade
+  kms_key_id                       = var.kms_key_id
+  db_name                          = var.db_name
+  username                         = var.username
+  password                         = local.password
+  final_snapshot_identifier_prefix = var.final_snapshot_identifier_prefix
+  skip_final_snapshot              = var.skip_final_snapshot
+  deletion_protection              = var.deletion_protection
+  backup_retention_period          = var.backup_retention_period
+  backup_window                    = var.backup_window
+  maintenance_window               = var.maintenance_window
+  port                             = var.port
+  db_subnet_group_name             = var.db_subnet_group_name
+  vpc_security_group_ids           = var.vpc_security_group_ids
+  snapshot_identifier              = var.snapshot_identifier
+  storage_encrypted                = var.storage_encrypted
+  apply_immediately                = var.apply_immediately
+  db_cluster_parameter_group_name  = local.rds_cluster_parameter_group_name
+  copy_tags_to_snapshot            = var.copy_tags_to_snapshot
+  enabled_cloudwatch_logs_exports  = var.enabled_cloudwatch_logs_exports
+  create_cloudwatch_log_group      = var.create_cloudwatch_log_group
 
   restore_to_point_in_time = var.restore_to_point_in_time
+  iam_roles                = var.iam_roles
   s3_import                = var.s3_import
 
   tags = merge(var.tags, var.tags)
