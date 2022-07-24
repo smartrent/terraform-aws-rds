@@ -59,7 +59,7 @@ module "security_group" {
 # RDS Module
 ################################################################################
 
-module "db_cluster" {
+module "rds_cluster" {
   source = "../../"
 
   create_rds_cluster = true

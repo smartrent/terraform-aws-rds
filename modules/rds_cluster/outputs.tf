@@ -62,8 +62,20 @@ output "cluster_hosted_zone_id" {
   value       = try(aws_rds_cluster.this[0].hosted_zone_id, "")
 }
 
-# aws_rds_cluster_role_association
+################################################################################
+# RDS Cluster Role Associations
+################################################################################
+
 output "cluster_role_associations" {
   description = "A map of IAM roles associated with the cluster and their attributes"
   value       = aws_rds_cluster_role_association.this
+}
+
+################################################################################
+# CloudWatch Log Group
+################################################################################
+
+output "cluster_cloudwatch_log_groups" {
+  description = "Map of CloudWatch log groups created and their attributes"
+  value       = aws_cloudwatch_log_group.this
 }
