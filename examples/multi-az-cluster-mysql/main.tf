@@ -91,7 +91,7 @@ module "rds_cluster" {
   enabled_cloudwatch_logs_exports = ["general"]
   create_cloudwatch_log_group     = true
 
-  backup_retention_period = 1
+  backup_retention_period = 0
   skip_final_snapshot     = true
   deletion_protection     = false
 
