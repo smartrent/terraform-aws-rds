@@ -63,15 +63,6 @@ output "cluster_hosted_zone_id" {
 }
 
 ################################################################################
-# RDS Cluster Role Associations
-################################################################################
-
-output "cluster_role_associations" {
-  description = "A map of IAM roles associated with the cluster and their attributes"
-  value       = aws_rds_cluster_role_association.this
-}
-
-################################################################################
 # CloudWatch Log Group
 ################################################################################
 

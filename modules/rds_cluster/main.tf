@@ -61,17 +61,6 @@ resource "aws_rds_cluster" "this" {
     delete = lookup(var.cluster_timeouts, "delete", null)
   }
 
-  dynamic "s3_import" {
-    for_each = var.s3_import != null ? [var.s3_import] : []
-    content {
-      source_engine         = "mysql"
-      source_engine_version = s3_import.value.source_engine_version
-      bucket_name           = s3_import.value.bucket_name
-      bucket_prefix         = lookup(s3_import.value, "bucket_prefix", null)
-      ingestion_role        = s3_import.value.ingestion_role
-    }
-  }
-
   dynamic "restore_to_point_in_time" {
     for_each = var.restore_to_point_in_time != null ? [var.restore_to_point_in_time] : []
 
@@ -86,14 +75,6 @@ resource "aws_rds_cluster" "this" {
   depends_on = [aws_cloudwatch_log_group.this]
 
   tags = merge(var.tags, var.cluster_tags)
-}
-
-resource "aws_rds_cluster_role_association" "this" {
-  for_each = var.create_cluster ? var.iam_roles : {}
-
-  db_cluster_identifier = try(aws_rds_cluster.this[0].id, "")
-  feature_name          = each.value.feature_name
-  role_arn              = each.value.role_arn
 }
 
 ################################################################################

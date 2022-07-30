@@ -187,10 +187,7 @@ module "rds_cluster" {
   copy_tags_to_snapshot            = var.copy_tags_to_snapshot
   enabled_cloudwatch_logs_exports  = var.enabled_cloudwatch_logs_exports
   create_cloudwatch_log_group      = var.create_cloudwatch_log_group
-
-  restore_to_point_in_time = var.restore_to_point_in_time
-  iam_roles                = var.iam_roles
-  s3_import                = var.s3_import
+  restore_to_point_in_time         = var.restore_to_point_in_time
 
   tags = merge(var.tags, var.tags)
 }

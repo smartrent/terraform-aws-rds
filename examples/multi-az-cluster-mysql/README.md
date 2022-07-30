@@ -47,5 +47,4 @@ No inputs.
 | <a name="output_rds_cluster_port"></a> [rds\_cluster\_port](#output\_rds\_cluster\_port) | The database port |
 | <a name="output_rds_cluster_reader_endpoint"></a> [rds\_cluster\_reader\_endpoint](#output\_rds\_cluster\_reader\_endpoint) | A read-only endpoint for the cluster, automatically load-balanced across replicas |
 | <a name="output_rds_cluster_resource_id"></a> [rds\_cluster\_resource\_id](#output\_rds\_cluster\_resource\_id) | The RDS Cluster Resource ID |
-| <a name="output_rds_cluster_role_associations"></a> [rds\_cluster\_role\_associations](#output\_rds\_cluster\_role\_associations) | A map of IAM roles associated with the cluster and their attributes |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

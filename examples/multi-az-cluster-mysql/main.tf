@@ -81,7 +81,7 @@ module "rds_cluster" {
   # user cannot be used as it is a reserved word used by the engine"
   db_name  = "multi_az_mysql"
   username = "multi_az_mysql"
-  port     = 5432
+  port     = 3306
 
   db_subnet_group_name   = module.vpc.database_subnet_group
   vpc_security_group_ids = [module.security_group.security_group_id]

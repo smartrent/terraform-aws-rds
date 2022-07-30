@@ -60,11 +60,6 @@ output "rds_cluster_hosted_zone_id" {
   value       = module.rds_cluster.rds_cluster_hosted_zone_id
 }
 
-output "rds_cluster_role_associations" {
-  description = "A map of IAM roles associated with the cluster and their attributes"
-  value       = module.rds_cluster.rds_cluster_role_associations
-}
-
 output "rds_cluster_parameter_group_id" {
   description = "The rds cluster parameter group id"
   value       = module.rds_cluster.rds_cluster_parameter_group_id

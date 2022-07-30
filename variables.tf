@@ -542,9 +542,3 @@ variable "use_cluster_identifier_prefix" {
   type        = bool
   default     = false
 }
-
-variable "iam_roles" {
-  description = "Map of IAM roles and supported feature names to associate with the cluster"
-  type        = map(map(string))
-  default     = {}
-}

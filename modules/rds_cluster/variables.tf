@@ -172,12 +172,6 @@ variable "cluster_timeouts" {
   default     = {}
 }
 
-variable "s3_import" {
-  description = "Configuration map used to restore from a Percona Xtrabackup in S3 (only MySQL is supported)"
-  type        = map(string)
-  default     = null
-}
-
 variable "restore_to_point_in_time" {
   description = "Restore to a point in time (MySQL is NOT supported)"
   type        = map(string)
@@ -212,13 +206,6 @@ variable "instance_class" {
   description = "The instance type of the RDS instance"
   type        = string
   default     = null
-}
-
-# aws_rds_cluster_role_association
-variable "iam_roles" {
-  description = "Map of IAM roles and supported feature names to associate with the cluster"
-  type        = map(map(string))
-  default     = {}
 }
 
 ################################################################################
