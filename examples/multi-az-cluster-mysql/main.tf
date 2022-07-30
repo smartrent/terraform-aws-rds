@@ -66,6 +66,9 @@ module "rds_cluster" {
   identifier         = local.name
 
   # You can create a Multi-AZ DB cluster only with MySQL version 8.0.28 and higher 8.0 versions.
+  # See more information:
+  # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/create-multi-az-db-cluster.html
+  # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/multi-az-db-clusters-concepts.html#multi-az-db-clusters-concepts.Limitations
   engine         = "mysql"
   engine_version = "8.0.28"
   family         = "mysql8.0"
@@ -76,9 +79,6 @@ module "rds_cluster" {
   iops           = 3000
   instance_class = "db.m5d.large"
 
-  # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
-  # "Error creating DB Instance: InvalidParameterValue: MasterUsername
-  # user cannot be used as it is a reserved word used by the engine"
   db_name  = "multi_az_mysql"
   username = "multi_az_mysql"
   port     = 3306

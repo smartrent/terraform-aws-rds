@@ -18,9 +18,6 @@ resource "random_id" "snapshot_identifier" {
 resource "aws_rds_cluster" "this" {
   count = var.create_cluster ? 1 : 0
 
-  # Notes:
-  # iam_roles has been removed from this resource and instead will be used with aws_rds_cluster_role_association below to avoid conflicts per docs
-
   cluster_identifier        = local.cluster_identifier
   cluster_identifier_prefix = local.cluster_identifier_prefix
   source_region             = var.source_region

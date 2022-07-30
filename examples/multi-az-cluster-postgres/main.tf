@@ -66,6 +66,9 @@ module "rds_cluster" {
   identifier         = local.name
 
   # You can create a Multi-AZ DB cluster only with PostgreSQL version 13.4.
+  # See more information:
+  # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/create-multi-az-db-cluster.html
+  # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/multi-az-db-clusters-concepts.html#multi-az-db-clusters-concepts.Limitations
   engine         = "postgres"
   engine_version = "13.4"
   family         = "postgres13"
