@@ -156,7 +156,6 @@ module "rds_cluster" {
   create_cluster                = local.create_rds_cluster
   cluster_identifier            = var.identifier
   use_cluster_identifier_prefix = var.use_cluster_identifier_prefix
-  source_region                 = var.source_region
 
   storage_type      = var.storage_type
   iops              = var.iops

@@ -20,7 +20,6 @@ resource "aws_rds_cluster" "this" {
 
   cluster_identifier        = local.cluster_identifier
   cluster_identifier_prefix = local.cluster_identifier_prefix
-  source_region             = var.source_region
 
   # These attributes are required for multi-az deployments
   storage_type              = var.storage_type

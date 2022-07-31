@@ -22,12 +22,6 @@ variable "use_cluster_identifier_prefix" {
   default     = false
 }
 
-variable "source_region" {
-  description = "The source region for an encrypted replica DB cluster"
-  type        = string
-  default     = null
-}
-
 variable "engine" {
   description = "The name of the database engine to be used for this DB cluster. Defaults to `aurora`. Valid Values: `aurora`, `aurora-mysql`, `aurora-postgresql`"
   type        = string

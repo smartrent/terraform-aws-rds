@@ -531,12 +531,6 @@ variable "engine_mode" {
   default     = null
 }
 
-variable "source_region" {
-  description = "The source region for an encrypted replica DB cluster"
-  type        = string
-  default     = null
-}
-
 variable "use_cluster_identifier_prefix" {
   description = "Determines whether to use `identifier` as is or create a unique identifier beginning with `identifier` as the specified prefix"
   type        = bool
