@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.1.0](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.0.3...v5.1.0) (2022-09-11)
+
+
+### Features
+
+* Add support for `network_type` ([#431](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/431)) ([a277924](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/a27792484f9634462827baf2feb663a8800e2ce4))
+
+### [5.0.3](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.0.2...v5.0.3) (2022-08-15)
+
+
+### Bug Fixes
+
+* Fixed example of cross-region replica where KMS key was missing ([#428](https://github.com/terraform-aws-modules/terraform-aws-rds/issues/428)) ([88418a7](https://github.com/terraform-aws-modules/terraform-aws-rds/commit/88418a71bb6338cc176858cea926fade3a4eb6f8))
+
 ### [5.0.2](https://github.com/terraform-aws-modules/terraform-aws-rds/compare/v5.0.1...v5.0.2) (2022-08-11)
 
 
